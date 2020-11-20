@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="css/index.css" />
+  <!-- Include meta tag to ensure proper rendering and touch zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Include jQuery Mobile stylesheets -->
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+  <!-- Include the jQuery library -->
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <!-- Include the jQuery Mobile library -->
+  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/databaseHandler.js"></script>
+  <script type="text/javascript" src="js/productHandler.js"></script>
+  <script type="text/javascript" src="js/index.js"></script>
+  <title>Restaurant Rating</title>
+</head>
+
+<body>
+  <div data-role="page" id="addpage">
+    <div data-role="panel" id="addPagePanel">
+      <h1>Menu</h1>
+      <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider">Product</li>
+        <li data-icon="plus"><a href="#addpage">Add</a></li>
+        <li data-icon="grid"><a href="#loadpage">Load</a></li>
+      </ul>
+    </div>
+    <div data-role="header" data-position="fixed">
+      <a href="#addPagePanel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all ui-shadow"></a>
+      <h1>Rating Restaurant</h1>
+    </div>
+    <div data-role="main" class="ui-content">
+      <section id="banner">
+      </section>
+      <form>
+        <div class="ui-field-contain">
+          <tr>
+            <label for="txtRestaurantName">Restaurant Name</label>
+            <input type="text" id="txtRestaurantName" data-clear-btn="true" />
+          </tr>
+          <tr>
+            <label for="txtReporterName">Reporter Name</label>
+            <input type="text" id="txtReporterName" data-clear-btn="true" />
+          </tr>
+          <tr>
+            <label for="txtAveragePrice">Average Price</label>
+            <input type="number" id="txtAveragePrice" data-clear-btn="true" />
+          </tr>
+          <tr>
+            <label for="txtRestaurantType">Restaurant Type</label>
+            <select id="txtRestaurantType" name="txtRestaurantType">
+              <option value="choose">-Choose Type-</option>
+              <option value="Grill">Grill</option>
+              <option value="Fast Food">Fast Food</option>
+              <option value="Sea Food">Sea Food</option>
+              <option value="Hot Pot">Hot Pot</option>
+            </select>
+          </tr>
+          <tr>
+            <label for="txtServiceRating">Services Rating</label>
+            <select id="txtServiceRating" name="txtServiceRating">
+              <option value="0">-Rate Star-</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </tr>
+
+          <tr>
+            <label for="txtCleanliness">Cleanliness Rating</label>
+            <select id="txtCleanliness" name="txtCleanliness">
+              <option value="0">-Rate Star-</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </tr>
+          <tr>
+            <label for="txtFoodRating">Food Quality Rating</label>
+            <select id="txtFoodRating" name="txtFoodRating">
+              <option value="0">-Rate Star-</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </tr>
+          <tr>
+            <label for="txtDate">Date</label>
+            <input type="date" id="txtDate" name="txtDate">
+          </tr>
+          <tr>
+            <label for="txtNote">Note</label>
+            <input type="tel" id="txtNote" name="txtNote">
+          </tr>
+          <tr>
+            <label for="btnAdd"></label>
+            <a class="ui-btn ui-icon-plus ui-btn-icon-left" id="btnAdd" onclick="addProduct()">Add Rating</a>
+          </tr>
+        </div>
+      </form>
+      <section id="banner1">
+      </section>
+    </div>
+  </div>
+  <div data-role="page" id="loadpage">
+    <div data-role="panel" id="loadPagePanel">
+      <h1>Menu</h1>
+      <ul data-role="listview" data-inset="true">
+        <li data-role="list-divider">Product</li>
+        <li data-icon="plus"><a href="#addpage">Add </a></li>
+        <li data-icon="grid"><a href="#loadpage">Load</a></li>
+      </ul>
+    </div>
+    <div data-role="header" data-position="fixed">
+      <a href="#loadPagePanel" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all ui-shadow"></a>
+      <h1>Load Rates</h1>
+    </div>
+    <div data-role="main" class="ui-content">
+      <section id="banner">
+      </section>
+      <form class="ui-filterable">
+        <input data-type="search" id="txtKeyword" />
+      </form>
+      <ul data-role="listview" data-filter="true" data-input="#txtKeyword" data-inset="true" id="lstProducts">
+      </ul>
+      <div data-role="popup" id="popupUpdateDelete">
+        <div data-role="header">
+          <a class="ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all" data-rel="back"></a>
+          <h1>Options</h1>
+        </div>
+        <div data-role="main" class="ui-content">
+          <a class="ui-btn ui-icon-delete ui-btn-icon-left ui-btn-inline" onclick="deleteProduct()">Delete</a>
+          <a class="ui-btn ui-icon-edit ui-btn-icon-left ui-btn-inline" href="#updatedialog">Update</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div data-role="dialog" id="updatedialog">
+    <div data-role="header">
+      <h1>Update product</h1>
+    </div>
+    <div data-role="main" class="ui-content">
+      <form>
+        <div class="ui-field-contain">
+          <tr>
+            <label for="txtNewRestaurantName">Restaurant</label>
+            <input type="text" id="txtNewRestaurantName" data-clear-btn="true" />
+          </tr>
+          <tr>
+            <label for="txtNewReporterName">Reporter</label>
+            <input type="text" id="txtNewReporterName" data-clear-btn="true" />
+          </tr>
+          <tr>
+            <label for="txtNewAveragePrice">Price</label>
+            <input type="number" id="txtNewAveragePrice" data-clear-btn="true" />
+          </tr>
+          <tr>
+            <label for="txtNewRestaurantType">Type</label>
+            <select id="txtNewRestaurantType" name="txtNewRestaurantType">
+              <option value="choose">-Choose Type-</option>
+              <option value="Grill">Grill</option>
+              <option value="Fast Food">Fast Food</option>
+              <option value="Sea Food">Sea Food</option>
+              <option value="Hot Pot">Hot Pot</option>
+            </select>
+          </tr>
+          <tr>
+            <label for="txtNewServiceRating">Services</label>
+            <select id="txtNewServiceRating" name="txtNewServiceRating">
+              <option value="0">-Rate Star-</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </tr>
+
+          <tr>
+            <label for="txtNewCleanliness">Cleanliness</label>
+            <select id="txtNewCleanliness" name="txtNewCleanliness">
+              <option value="0">-Rate Star-</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </tr>
+          <tr>
+            <label for="txtNewFoodRating">Quality</label>
+            <select id="txtNewFoodRating" name="txtNewFoodRating">
+              <option value="0">-Rate Star-</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </tr>
+          <tr>
+            <label for="txtNewDate">Date</label>
+            <input type="date" id="txtNewDate" name="txtNewDate">
+          </tr>
+          <tr>
+            <label for="txtNewNote">Note</label>
+            <input type="tel" id="txtNewNote" name="txtNewNote">
+          </tr>
+          <label for="btnUpdate"></label>
+          <a class="ui-btn ui-icon-plus ui-btn-icon-left" id="btnUpdate" onclick="updateProduct()">Update</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
